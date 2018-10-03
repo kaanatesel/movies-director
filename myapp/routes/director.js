@@ -1,3 +1,4 @@
+const mongoose = require('mongoose')
 const express = require('express');
 const router = express.Router();
 
@@ -37,37 +38,104 @@ router.get('/directorMovies', (req, res) => {
         {
             $unwind: {
                 path: '$movies',
-                preserveNullAndEmptyArrays : true
+                preserveNullAndEmptyArrays: true
             }
         },
         {
-            $group:{
-                _id:{
-                    _id:'$_id',
-                    name:'$name',
-                    surname:'$surname',
-                    bio:'$bio'
+            $group: {
+                _id: {
+                    _id: '$_id',
+                    name: '$name',
+                    surname: '$surname',
+                    bio: '$bio'
                 },
-                movies:{
-                    $push:'$movies'
+                movies: {
+                    $push: '$movies'
                 }
-                
+
             }
-          
+
         },
-        { $project:{
-            id: '$_id._id',
-            name: '$_id.name',
-            surname: '$_id.surname',
-            bio: '$_id.bio',
-            movies:'$moviesx'
-        }}
+        {
+            $project: {
+                id: '$_id._id',
+                name: '$_id.name',
+                surname: '$_id.surname',
+                bio: '$_id.bio',
+                movies: '$movies'
+            }
+        }
     ])
-    promise.then((data)=>{
+    promise.then((data) => {
         res.send(data)
-    }).catch((err)=>{
+    }).catch((err) => {
         res.send(err)
     })
 })
+
+router.get('/directorMovies/:obj_id', (req, res) => {
+    const promise = Director.aggregate([
+        {
+            $match:
+            {
+                _id: mongoose.Types.ObjectId(req.params.obj_id)
+            }
+        }, {
+            $lookup: {
+                from: 'movies',
+                localField: '_id',
+                foreignField: 'director_id',
+                as: 'movies'
+            }
+        },
+        {
+            $unwind: {
+                path: '$movies',
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    _id: '$_id',
+                    name: '$name',
+                    surname: '$surname',
+                    bio: '$bio'
+                },
+                movies: {
+                    $push: '$movies'
+                }
+
+            }
+
+        },
+        {
+            $project:
+            {
+                id: '$_id._id',
+                name: '$_id.name',
+                surname: '$_id.surname',
+                bio: '$_id.bio',
+                movies: '$movies'
+            }
+        }
+    ])
+    promise.then((data) => {
+        res.send(data)
+    }).catch((err) => {
+        res.send(err)
+    })
+})
+
+router.put('/:directorID', (req, res) => {
+    const promise = Director.findByIdAndUpdate(req.params.directorID,req.body,{new:true});
+    promise.then((director) => {
+  
+      res.json(director)
+  
+    }).catch((err) => {
+      res.json(err)
+    })
+  })
 
 module.exports = router;
