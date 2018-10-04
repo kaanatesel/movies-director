@@ -4,6 +4,8 @@ const router = express.Router();
 //Models
 const Movie = require('../models/Movies')
 
+
+
 router.get('/getallMovies', (req, res) => {
   const promise = Movie.aggregate([
     {
@@ -68,7 +70,7 @@ router.delete('/:movieID', (req, res, next) => {
   })
 })
 
-router.post('/', (req, res, next) => {
+router.post('/postMovie', (req, res, next) => {
   const {director_id,title, category, country, imbd_score } = req.body;
 
   const movie = new Movie({
@@ -82,7 +84,7 @@ router.post('/', (req, res, next) => {
   const promise = movie.save();
 
   promise.then((data) => {
-    res.json({ status: 1 })
+    res.json(data)
   }).catch((err) => {
     res.json(err)
   })

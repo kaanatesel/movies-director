@@ -17,7 +17,7 @@ router.post('/director', (req, res) => {
     const promise = director.save()
 
     promise.then((data) => {
-        res.send(data)
+        res.status(200).send(data)
     }).catch((err) => {
         res.send(err)
     })
@@ -136,6 +136,16 @@ router.put('/:directorID', (req, res) => {
     }).catch((err) => {
       res.json(err)
     })
+  })
+
+  router.delete('/:directorID',(req,res)=>{
+      const promise = Director.findByIdAndRemove(req.params.directorID)
+
+      promise.then((dell)=>{
+          res.json({status:1})
+      }).catch((err)=>{
+          res.json(err)
+      })
   })
 
 module.exports = router;
