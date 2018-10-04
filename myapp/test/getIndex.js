@@ -111,6 +111,9 @@ describe('add diretors', () => {
     })
 })
 
+
+
+
 describe('delete directors ', () => {
     it('del directors', (done) => {
         chai.request(server)
