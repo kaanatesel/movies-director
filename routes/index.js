@@ -6,11 +6,6 @@ const bcrypt = require('bcrypt');
 //moduls
 const User = require('../models/Users')
 
-
-
-
-
-
 router.post('/register', (req, res, next) => {
   const { username, password } = req.body;
 
@@ -28,15 +23,6 @@ router.post('/register', (req, res, next) => {
     })
   });
 });
-
-
-
-
-
-
-
-
-
 
 router.post('/authentication',(req,res)=>{
   const { username,password} = req.body
