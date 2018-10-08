@@ -6,5 +6,6 @@ before_install:
   - npm install
   
 script:
+  - npm install mocha
   - npm run test
 
