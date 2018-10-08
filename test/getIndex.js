@@ -7,14 +7,14 @@ chai.use(chaiHttp)
 
 
 
-describe('node server', () => {
-    it('get index html ', (done) => {
-        chai.request(server).get('/').end((err, res) => {
-            res.should.have.status(200)
-            done()
-        })
-    })
-})
+// describe('node server', () => {
+//     it('get index html ', (done) => {
+//         chai.request(server).get('/').end((err, res) => {
+//             res.should.have.status(200)
+//             done()
+//         })
+//     })
+// })
 
 let token, directID, delDirectorID;
 
